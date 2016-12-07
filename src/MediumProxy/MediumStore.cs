@@ -3,47 +3,47 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using MeduimProxy.Accessor;
-using MeduimProxy.Model;
+using MediumProxy.Accessor;
+using MediumProxy.Model;
 using Microsoft.Extensions.Logging;
 
-namespace MeduimProxy
+namespace MediumProxy
 {
-    public class MeduimStore : IDisposable
+    public class MediumStore : IDisposable
     {
         private readonly ILogger _logger;
         private static ILoggerFactory _loggerFactory;
 
         private static readonly object Sync = new object();
 
-        private static volatile MeduimCache _cachedInstance;
+        private static volatile MediumCache _cachedInstance;
 
         private const int DefaultContentCount = 10;
 
-        public MeduimStore()
+        public MediumStore()
         {
-            _loggerFactory = MeduimProxyConfigure.LoggerFactory;
+            _loggerFactory = MediumProxyConfigure.LoggerFactory;
 
-            if (MeduimProxyConfigure.LoggerFactory == null)
-                throw new ArgumentNullException(nameof(MeduimProxyConfigure.LoggerFactory));
+            if (MediumProxyConfigure.LoggerFactory == null)
+                throw new ArgumentNullException(nameof(MediumProxyConfigure.LoggerFactory));
 
-            _logger = MeduimProxyConfigure.LoggerFactory.CreateLogger<MeduimStore>();
+            _logger = MediumProxyConfigure.LoggerFactory.CreateLogger<MediumStore>();
 
             var cachedInstance = CachedInstance;
         }
 
-        public MeduimStore(ILoggerFactory loggerFactory)
+        public MediumStore(ILoggerFactory loggerFactory)
         {
-            _loggerFactory = loggerFactory ?? MeduimProxyConfigure.LoggerFactory;
+            _loggerFactory = loggerFactory ?? MediumProxyConfigure.LoggerFactory;
 
             if (_loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory));
 
-            _logger = loggerFactory.CreateLogger<MeduimStore>();
+            _logger = loggerFactory.CreateLogger<MediumStore>();
             var cachedInstance = CachedInstance;
         }
 
-        public MeduimCache CachedInstance
+        public MediumCache CachedInstance
         {
             get
             {
@@ -53,7 +53,7 @@ namespace MeduimProxy
                 {
                     // instanced
                     if (_cachedInstance == null)
-                        _cachedInstance = new MeduimCache(_loggerFactory);
+                        _cachedInstance = new MediumCache(_loggerFactory);
 
                     // deligation refleshing cache
                     _cachedInstance.RefreshCacheExecute = async (currentContentCount) =>
@@ -95,7 +95,7 @@ namespace MeduimProxy
         private async Task<List<Item>> CallApiAndAddAsync()
         {
             var results = new List<Item>();
-            using (var accessor = new MeduimApiAccessor(_loggerFactory))
+            using (var accessor = new MediumApiAccessor(_loggerFactory))
             {
                 var feed = await accessor.GetRssFeedAsync();
 

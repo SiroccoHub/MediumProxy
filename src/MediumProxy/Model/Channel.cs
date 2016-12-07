@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MeduimProxy.Model
+namespace MediumProxy.Model
 {
     public class Channel
     {

@@ -4,10 +4,10 @@ using System.Globalization;
 using System.Linq;
 using System.Xml;
 using System.Threading.Tasks;
-using MeduimProxy.Model;
+using MediumProxy.Model;
 using Microsoft.Extensions.Logging;
 
-namespace MeduimProxy
+namespace MediumProxy
 {
     public class MediumFeedParser
     {

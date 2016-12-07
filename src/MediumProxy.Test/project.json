@@ -5,7 +5,6 @@
   "dependencies": {
     "xunit": "2.2.0-beta2-build3300",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
-    "MeduimProxy": "1.1.0-*",
     "FluentAssertions": "4.18.0",
     "Microsoft.Extensions.Logging": "1.1.0",
     "Microsoft.Extensions.Logging.Console": "1.1.0",
@@ -14,7 +13,8 @@
     "Microsoft.NETCore.App": {
       "version": "1.1.0",
       "type": "platform"
-    }
+    },
+    "MediumProxy": "1.0.0"
   },
 
   "frameworks": {

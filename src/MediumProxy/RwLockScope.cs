@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace MeduimProxy
+namespace MediumProxy
 {
     internal class RwLockScope : IDisposable
     {

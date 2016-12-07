@@ -2,19 +2,19 @@
 using System.Net;
 using Microsoft.Extensions.Logging;
 
-namespace MeduimProxy
+namespace MediumProxy
 {
-    public static class MeduimProxyConfigure
+    public static class MediumProxyConfigure
     {
         public static ILoggerFactory LoggerFactory;
 
-        public static class MeduimApi
+        public static class MediumApi
         {
             public static string EndPointFqdn { get; private set; }
 
             public static string UserId { get; private set; }
 
-            static MeduimApi()
+            static MediumApi()
             {
                 EndPointFqdn = "https://medium.com/feed/";
                 UserId = "@medium";
@@ -31,7 +31,7 @@ namespace MeduimProxy
             }
         }
 
-        public static class MeduimCachePolicy
+        public static class MediumCachePolicy
         {
             public static int CachedItemsCountHardLimit = 50;
 

@@ -1,4 +1,5 @@
 {
+  "title": "MediumProxy",
   "version": "1.0.0",
 
   "dependencies": {
@@ -16,5 +17,5 @@
       "imports": "dnxcore50"
     },
     "net461": {}
-  } 
+  }
 }

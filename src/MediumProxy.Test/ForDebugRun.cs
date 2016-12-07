@@ -3,17 +3,17 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using MeduimProxy;
+using MediumProxy;
 using Xunit;
 
-namespace MeduimProxy.Test
+namespace MediumProxy.Test
 {
     public class ForDebugRun
     {
         [Fact]
         public async Task GetCurrentTimelineAsync()
         {
-            using (var x = new MeduimStore(ApplicationLogging.LoggerFactory))
+            using (var x = new MediumStore(ApplicationLogging.LoggerFactory))
             {
                 var content = (await x.GetCurrentTimelineAsync()).ToList();
                 Assert.True(content.Any());
@@ -26,7 +26,7 @@ namespace MeduimProxy.Test
         {
             var sw = new Stopwatch();
 
-            using (var x = new MeduimStore(ApplicationLogging.LoggerFactory))
+            using (var x = new MediumStore(ApplicationLogging.LoggerFactory))
             {
                 sw.Restart();
 
@@ -103,7 +103,7 @@ namespace MeduimProxy.Test
                 }
             }
 
-            using (var x = new MeduimStore(ApplicationLogging.LoggerFactory))
+            using (var x = new MediumStore(ApplicationLogging.LoggerFactory))
             {
                 sw.Restart();
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MeduimProxy.Model
+namespace MediumProxy.Model
 {
     public class Item : IEquatable<Item>
     {

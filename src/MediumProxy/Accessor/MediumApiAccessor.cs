@@ -2,27 +2,27 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
-using MeduimProxy.Model;
+using MediumProxy.Model;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace MeduimProxy.Accessor
+namespace MediumProxy.Accessor
 {
-    internal class MeduimApiAccessor : IDisposable
+    internal class MediumApiAccessor : IDisposable
     {
         private readonly ILogger _logger;
 
         private readonly HttpClient _httpClient;
 
-        public MeduimApiAccessor(ILoggerFactory loggerFactory)
+        public MediumApiAccessor(ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger<MeduimApiAccessor>();
+            _logger = loggerFactory.CreateLogger<MediumApiAccessor>();
             _httpClient = new HttpClient();
         }
 
-        public MeduimApiAccessor(ILoggerFactory loggerFactory, HttpMessageHandler httpMessageHandler)
+        public MediumApiAccessor(ILoggerFactory loggerFactory, HttpMessageHandler httpMessageHandler)
         {
-            _logger = loggerFactory.CreateLogger<MeduimApiAccessor>();
+            _logger = loggerFactory.CreateLogger<MediumApiAccessor>();
             _httpClient = new HttpClient(httpMessageHandler);
         }
 
@@ -32,7 +32,7 @@ namespace MeduimProxy.Accessor
             try
             {
                 var response = await _httpClient.GetAsync(
-                    $"{MeduimProxyConfigure.MeduimApi.EndPointFqdn}{MeduimProxyConfigure.MeduimApi.UserId}");
+                    $"{MediumProxyConfigure.MediumApi.EndPointFqdn}{MediumProxyConfigure.MediumApi.UserId}");
 
                 response.EnsureSuccessStatusCode();
                 result = response.Content.ReadAsStringAsync().Result;

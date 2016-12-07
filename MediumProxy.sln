@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MeduimProxy", "src\MeduimProxy\MeduimProxy.xproj", "{1085819B-9E50-4277-A844-26D306B13731}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MediumProxy", "src\MediumProxy\MediumProxy.xproj", "{1085819B-9E50-4277-A844-26D306B13731}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MeduimProxy.Test", "src\MeduimProxy.Test\MeduimProxy.Test.xproj", "{CA3D2BA1-D680-4F73-B18E-8F5CA881966A}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MediumProxy.Test", "src\MediumProxy.Test\MediumProxy.Test.xproj", "{CA3D2BA1-D680-4F73-B18E-8F5CA881966A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C86A32CD-E84C-4C6D-B37A-DD5F67EDB0C8}"
 	ProjectSection(SolutionItems) = preProject

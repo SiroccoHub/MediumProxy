@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace MeduimProxy
+namespace MediumProxy.Test
 {
     public static class ApplicationLogging
     {

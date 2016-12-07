@@ -4,12 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MeduimProxy.Model;
+using MediumProxy.Model;
 using Microsoft.Extensions.Logging;
 
-namespace MeduimProxy
+namespace MediumProxy
 {
-    public class MeduimCache : IDisposable
+    public class MediumCache : IDisposable
     {
         private readonly ILogger _logger;
 
@@ -31,16 +31,16 @@ namespace MeduimProxy
 
         private bool DoRefreshing { get; set; }
 
-        public MeduimCache(ILoggerFactory loggerFactory)
+        public MediumCache(ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger<MeduimCache>();
+            _logger = loggerFactory.CreateLogger<MediumCache>();
             _contents = new List<Item>();
 
-            CacheLifecycleTimeSpan = MeduimProxyConfigure.MeduimCachePolicy.CacheLifecycleTimeSpan;
-            CacheLifecycleSpeculativeExecutionRate = MeduimProxyConfigure.MeduimCachePolicy.CacheLifecycleSpeculativeExecutionRate;
+            CacheLifecycleTimeSpan = MediumProxyConfigure.MediumCachePolicy.CacheLifecycleTimeSpan;
+            CacheLifecycleSpeculativeExecutionRate = MediumProxyConfigure.MediumCachePolicy.CacheLifecycleSpeculativeExecutionRate;
 
-            MonitoringThreadInterval = MeduimProxyConfigure.MeduimCachePolicy.MonitoringThreadInterval;
-            CachedItemsCountHardLimit = MeduimProxyConfigure.MeduimCachePolicy.CachedItemsCountHardLimit;
+            MonitoringThreadInterval = MediumProxyConfigure.MediumCachePolicy.MonitoringThreadInterval;
+            CachedItemsCountHardLimit = MediumProxyConfigure.MediumCachePolicy.CachedItemsCountHardLimit;
 
             RefreshCachePredicate = currentDateTime =>
             {
