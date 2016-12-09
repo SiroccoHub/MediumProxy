@@ -162,7 +162,7 @@ namespace MediumProxy
         /// Get all Contents
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Item>> GetAllAsync(bool forceNow = false)
+        public async Task<IList<Item>> GetAllAsync(bool forceNow = false)
         {
             _logger.LogInformation("calling GetAllAsync()");
 
@@ -171,9 +171,10 @@ namespace MediumProxy
             {
                 await RefreshCacheAsync(ModifiedDateTimeUtc != DateTime.MinValue);
             }
-
-            // TODO: need for some lock...
-            return _contents;
+            using (new RwLockScope()) //i know it's shallow...
+            {
+                return _contents.ToList();
+            }
         }
 
 
