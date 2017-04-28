@@ -13,9 +13,9 @@ namespace MediumProxy
 
         public static async Task<Uri> GetFirstImageUriAsync(this Item item, Uri defaultUrl = null)
         {
-            if (string.IsNullOrEmpty(item?.Description)) return defaultUrl;
+            if (string.IsNullOrEmpty(item?.ContentEncoded)) return defaultUrl;
 
-            var match = RegexFirstImageUrl.Match(item.Description);
+            var match = RegexFirstImageUrl.Match(item.ContentEncoded);
 
             if (match.Groups.Count < 1) return defaultUrl;
 

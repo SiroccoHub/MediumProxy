@@ -25,7 +25,7 @@ namespace MediumProxy
                 if (endPointFqdn != null) EndPointFqdn = endPointFqdn;
             }
 
-            public static void SetUsrId(string userId)
+            public static void SetUserId(string userId)
             {
                 if (userId != null) UserId = userId;
             }

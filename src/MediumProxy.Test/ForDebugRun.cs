@@ -28,15 +28,15 @@ namespace MediumProxy.Test
         {
             var item = new Item("dummy")
             {
-                Description =
+                ContentEncoded =
                     "<div class=\"medium-feed-item\"><p class=\"medium-feed-image\"><a href=\"https://medium.com/@Medium/personalize-your-medium-experience-with-users-publications-tags-26a41ab1ee0c?source=rss-504c7870fdb6------2\"><img src=\"https://cdn-images-1.medium.com/max/1024/1*Y_AoLGDT2ku9uuksLQDk4w.png\" width=\"1024\"></a></p><p class=\"medium-feed-snippet\">Following users, publications, and tags on Medium</p><p class=\"medium-feed-link\"><img src=\"https://cdn-images-1.medium.com/max/1024/1*Y_AoLGDT2ku9uuksLQDk4w.png\" width=\"1024\">",
             };
-            Assert.True(item.Description.Contains((await item.GetFirstImageUriAsync()).AbsoluteUri));
+            Assert.True(item.ContentEncoded.Contains((await item.GetFirstImageUriAsync()).AbsoluteUri));
 
-            item.Description = @"dummy";
+            item.ContentEncoded = @"dummy";
             Assert.Null(await item.GetFirstImageUriAsync());
 
-            item.Description = @"dummy";
+            item.ContentEncoded = @"dummy";
             Assert.True(new Uri("about:blank").AbsoluteUri == (await item.GetFirstImageUriAsync(new Uri("about:blank"))).AbsoluteUri);
 
             item = null;
@@ -53,6 +53,9 @@ namespace MediumProxy.Test
 
             using (var x = new MediumStore(ApplicationLogging.LoggerFactory))
             {
+
+                MediumProxyConfigure.MediumApi.SetUserId("@arichika");
+
                 sw.Restart();
 
                 var contents = (await x.GetTimelineAsync(5)).ToList();

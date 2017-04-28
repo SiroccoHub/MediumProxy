@@ -14,7 +14,7 @@ namespace MediumProxy.Model
         }
 
         public string Title { get; set; }
-        public string Description { get; set; }
+        public string ContentEncoded { get; set; }
         public Uri Link { get; set; }
 
         public string MediumGuid { get; }
