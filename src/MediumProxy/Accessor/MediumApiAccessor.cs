@@ -14,14 +14,18 @@ namespace MediumProxy.Accessor
 
         private readonly HttpClient _httpClient;
 
-        public MediumApiAccessor(ILoggerFactory loggerFactory)
+        private readonly ProxyOptions _proxyOptions;
+
+        public MediumApiAccessor(ILoggerFactory loggerFactory, ProxyOptions proxyOptions)
         {
+            _proxyOptions = proxyOptions;
             _logger = loggerFactory.CreateLogger<MediumApiAccessor>();
             _httpClient = new HttpClient();
         }
 
-        public MediumApiAccessor(ILoggerFactory loggerFactory, HttpMessageHandler httpMessageHandler)
+        public MediumApiAccessor(ILoggerFactory loggerFactory, HttpMessageHandler httpMessageHandler, ProxyOptions proxyOptions)
         {
+            _proxyOptions = proxyOptions;
             _logger = loggerFactory.CreateLogger<MediumApiAccessor>();
             _httpClient = new HttpClient(httpMessageHandler);
         }
@@ -32,7 +36,7 @@ namespace MediumProxy.Accessor
             try
             {
                 var response = await _httpClient.GetAsync(
-                    $"{MediumProxyConfigure.MediumApi.EndPointFqdn}{MediumProxyConfigure.MediumApi.UserId}");
+                    $"{_proxyOptions.EndPointFqdn}{_proxyOptions.UserId}");
 
                 response.EnsureSuccessStatusCode();
                 result = response.Content.ReadAsStringAsync().Result;

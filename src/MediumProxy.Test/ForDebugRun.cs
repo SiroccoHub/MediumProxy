@@ -15,7 +15,7 @@ namespace MediumProxy.Test
         [Fact]
         public async Task GetCurrentTimelineAsync()
         {
-            using (var x = new MediumStore(ApplicationLogging.LoggerFactory))
+            using (var x = new MediumStore(ApplicationLogging.LoggerFactory, null))
             {
                 var content = (await x.GetCurrentTimelineAsync()).ToList();
                 Assert.True(content.Any());
@@ -49,13 +49,15 @@ namespace MediumProxy.Test
         [Fact]
         public async Task GetCached()
         {
+            var option = new ProxyOptions()
+            {
+                UserId = "@arichika",
+            };
+
             var sw = new Stopwatch();
 
-            using (var x = new MediumStore(ApplicationLogging.LoggerFactory))
+            using (var x = new MediumStore(ApplicationLogging.LoggerFactory, option))
             {
-
-                MediumProxyConfigure.MediumApi.SetUserId("@arichika");
-
                 sw.Restart();
 
                 var contents = (await x.GetTimelineAsync(5)).ToList();
@@ -131,7 +133,7 @@ namespace MediumProxy.Test
                 }
             }
 
-            using (var x = new MediumStore(ApplicationLogging.LoggerFactory))
+            using (var x = new MediumStore(ApplicationLogging.LoggerFactory, option))
             {
                 sw.Restart();
 

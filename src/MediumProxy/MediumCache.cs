@@ -16,35 +16,30 @@ namespace MediumProxy
         private readonly List<Item> _contents;
         public DateTime ModifiedDateTimeUtc { get; private set; }
 
-        public TimeSpan CacheLifecycleTimeSpan;
-        public Predicate<DateTime> RefreshCachePredicate;
+        private Predicate<DateTime> RefreshCachePredicate { get; }
 
-        public double CacheLifecycleSpeculativeExecutionRate;
-        public Predicate<DateTime> RefreshCacheSpeculativeExecutionPredicate;
+        private Predicate<DateTime> RefreshCacheSpeculativeExecutionPredicate { get; }
+
         private volatile bool _executeMonitoringThread = true;
 
-        public Func<int, Task<List<Item>>> RefreshCacheExecute;
+        public Func<int, Task<List<Item>>> RefreshCacheExecute { private get; set; }
 
-        public TimeSpan MonitoringThreadInterval;
-
-        public int CachedItemsCountHardLimit;
+        private readonly ProxyOptions _proxyOptions;
 
         private bool DoRefreshing { get; set; }
 
-        public MediumCache(ILoggerFactory loggerFactory)
+        public MediumCache(ILoggerFactory loggerFactory, ProxyOptions proxyOptions)
         {
+
             _logger = loggerFactory.CreateLogger<MediumCache>();
+
+            _proxyOptions = proxyOptions ?? new ProxyOptions();
+            
             _contents = new List<Item>();
-
-            CacheLifecycleTimeSpan = MediumProxyConfigure.MediumCachePolicy.CacheLifecycleTimeSpan;
-            CacheLifecycleSpeculativeExecutionRate = MediumProxyConfigure.MediumCachePolicy.CacheLifecycleSpeculativeExecutionRate;
-
-            MonitoringThreadInterval = MediumProxyConfigure.MediumCachePolicy.MonitoringThreadInterval;
-            CachedItemsCountHardLimit = MediumProxyConfigure.MediumCachePolicy.CachedItemsCountHardLimit;
 
             RefreshCachePredicate = currentDateTime =>
             {
-                var targetDt = ModifiedDateTimeUtc.Add(CacheLifecycleTimeSpan);
+                var targetDt = ModifiedDateTimeUtc.Add(_proxyOptions.CachePolicy.CacheLifecycleTimeSpan);
 
                 _logger.LogInformation($"calling delegate RefreshCachePredicate(),{targetDt},{currentDateTime}");
                 return (targetDt < currentDateTime);
@@ -53,7 +48,9 @@ namespace MediumProxy
             RefreshCacheSpeculativeExecutionPredicate = currentDateTime =>
             {
                 var targetDt = ModifiedDateTimeUtc.Add(
-                    new TimeSpan((long)(CacheLifecycleTimeSpan.Ticks * CacheLifecycleSpeculativeExecutionRate)));
+                    new TimeSpan((long)(
+                        _proxyOptions.CachePolicy.CacheLifecycleTimeSpan.Ticks
+                        * _proxyOptions.CachePolicy.CacheLifecycleSpeculativeExecutionRate)));
 
                 _logger.LogInformation($"calling delegate RefreshCacheSpeculativeExecutionPredicate(),{targetDt},{currentDateTime}");
                 return (targetDt < currentDateTime);
@@ -66,9 +63,9 @@ namespace MediumProxy
             {
                 while (_executeMonitoringThread)
                 {
-                    await Task.Delay(MonitoringThreadInterval);
+                    await Task.Delay(_proxyOptions.CachePolicy.MonitoringThreadInterval);
 
-                    _logger.LogInformation($"calling ()monitoring. _executeMonitoringThread={ _executeMonitoringThread},interval={MonitoringThreadInterval}");
+                    _logger.LogInformation($"calling ()monitoring. _executeMonitoringThread={ _executeMonitoringThread},interval={_proxyOptions.CachePolicy.MonitoringThreadInterval}");
                     if (RefreshCacheSpeculativeExecutionPredicate(DateTime.UtcNow))
                         await RefreshCacheAsync(true);
                 }
@@ -102,10 +99,10 @@ namespace MediumProxy
                 _contents.RemoveAll(addList.Contains);
                 _contents.AddRange(addList);
 
-                if (_contents.Count > CachedItemsCountHardLimit)
+                if (_contents.Count > _proxyOptions.CachePolicy.CachedItemsCountHardLimit)
                 {
-                    _logger.LogWarning($"fire CachedItemsCountHardLimit,{_contents.Count},{CachedItemsCountHardLimit},will delete");
-                    _contents.RemoveRange(CachedItemsCountHardLimit, _contents.Count - CachedItemsCountHardLimit);
+                    _logger.LogWarning($"fire CachedItemsCountHardLimit,{_contents.Count},{_proxyOptions.CachePolicy.CachedItemsCountHardLimit},will delete");
+                    _contents.RemoveRange(_proxyOptions.CachePolicy.CachedItemsCountHardLimit, _contents.Count - _proxyOptions.CachePolicy.CachedItemsCountHardLimit);
                 }
 
                 ModifiedDateTimeUtc = DateTime.UtcNow;

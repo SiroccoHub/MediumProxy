@@ -14,33 +14,24 @@ namespace MediumProxy
         private readonly ILogger _logger;
         private static ILoggerFactory _loggerFactory;
 
-        private static readonly object Sync = new object();
+        private readonly object _sync = new object();
 
-        private static volatile MediumCache _cachedInstance;
+        private volatile MediumCache _cachedInstance;
 
         private const int DefaultContentCount = 10;
 
-        public MediumStore()
+        private readonly ProxyOptions _proxyOptions;
+
+        public MediumStore(ILoggerFactory loggerFactory, ProxyOptions proxyOptions)
         {
-            _loggerFactory = MediumProxyConfigure.LoggerFactory;
-
-            if (MediumProxyConfigure.LoggerFactory == null)
-                throw new ArgumentNullException(nameof(MediumProxyConfigure.LoggerFactory));
-
-            _logger = MediumProxyConfigure.LoggerFactory.CreateLogger<MediumStore>();
-
-            var cachedInstance = CachedInstance;
-        }
-
-        public MediumStore(ILoggerFactory loggerFactory)
-        {
-            _loggerFactory = loggerFactory ?? MediumProxyConfigure.LoggerFactory;
+            _loggerFactory = loggerFactory;
 
             if (_loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory));
 
             _logger = loggerFactory.CreateLogger<MediumStore>();
-            var cachedInstance = CachedInstance;
+
+            _proxyOptions = proxyOptions ?? new ProxyOptions();
         }
 
         public MediumCache CachedInstance
@@ -49,11 +40,11 @@ namespace MediumProxy
             {
                 if (_cachedInstance != null) return _cachedInstance;
 
-                lock (Sync)
+                lock (_sync)
                 {
                     // instanced
                     if (_cachedInstance == null)
-                        _cachedInstance = new MediumCache(_loggerFactory);
+                        _cachedInstance = new MediumCache(_loggerFactory, _proxyOptions);
 
                     // deligation refleshing cache
                     _cachedInstance.RefreshCacheExecute = async (currentContentCount) =>
@@ -95,7 +86,7 @@ namespace MediumProxy
         private async Task<List<Item>> CallApiAndAddAsync()
         {
             var results = new List<Item>();
-            using (var accessor = new MediumApiAccessor(_loggerFactory))
+            using (var accessor = new MediumApiAccessor(_loggerFactory, _proxyOptions))
             {
                 var feed = await accessor.GetRssFeedAsync();
 
