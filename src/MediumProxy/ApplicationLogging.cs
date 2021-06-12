@@ -19,8 +19,6 @@ namespace MediumProxy
                 return _loggerFactory;
 
             _loggerFactory = new LoggerFactory();
-            _loggerFactory.AddConsole(LogLevel.Debug);
-            _loggerFactory.AddDebug();
             _initialized = true;
 
             return _loggerFactory;
